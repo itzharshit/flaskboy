@@ -1,12 +1,20 @@
 from flask import Flask, render_template, request, jsonify
+import os
+from groq import Groq
 
 app = Flask(__name__)
 
-# Fixed questions and answers
-qa_pairs = {
-    "What is your name?": "I am your mentor bot.",
-    "How can you help me?": "I can provide guidance on various topics.",
-    "What is Flask?": "Flask is a lightweight WSGI web application framework."
+systemPrompt = """
+
+"""
+
+# Create the Groq client
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+
+# Set the system prompt
+system_prompt = {
+    "role": "system",
+    "content": systemPrompt
 }
 
 @app.route('/')
@@ -16,7 +24,15 @@ def home():
 @app.route('/get_answer', methods=['POST'])
 def get_answer():
     question = request.json.get("question")
-    answer = qa_pairs.get(question, "I don't know the answer to that question.")
+    chat_history = [system_prompt, {"role": "user", "content": question}]
+    response = client.chat.completions.create(
+        model="llama3-70b-8192",
+        messages=chat_history,
+        max_tokens=100,
+        temperature=1.2
+    )
+    answer = response.choices[0].message.content
+
     return jsonify({"answer": answer})
 
 if __name__ == '__main__':
