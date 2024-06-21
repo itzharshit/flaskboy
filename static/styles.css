@@ -1,18 +1,20 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #f0f0f0;
+    background: linear-gradient(135deg, #72EDF2 10%, #5151E5 100%);
     margin: 0;
+    color: #444;
 }
 
 .chat-container {
     width: 400px;
+    max-width: 100%;
     background: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
     overflow: hidden;
 }
 
@@ -21,24 +23,48 @@ body {
     height: 300px;
     overflow-y: auto;
     border-bottom: 1px solid #ddd;
+    background: #f9f9f9;
 }
 
 .chat-box div {
     margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.chat-box div:nth-child(odd) {
+    background: #e0e0e0;
+}
+
+.chat-box div:nth-child(even) {
+    background: #cce4ff;
+    text-align: right;
+}
+
+.input-container {
+    display: flex;
+    border-top: 1px solid #ddd;
 }
 
 input[type="text"] {
     width: 80%;
-    padding: 10px;
+    padding: 15px;
     border: none;
     outline: none;
+    font-size: 16px;
 }
 
 button {
     width: 20%;
-    padding: 10px;
+    padding: 15px;
     border: none;
-    background: #007BFF;
+    background: #5151E5;
     color: white;
     cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #72EDF2;
 }
