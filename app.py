@@ -1,14 +1,8 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify
 import os
 from groq import Groq
-from flask_session import Session
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
-
-# Configure server-side session storage (can be configured to use Redis, filesystem, etc.)
-app.config['SESSION_TYPE'] = 'filesystem'
-Session(app)
 
 # Create the Groq client
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
@@ -27,11 +21,8 @@ def home():
 def get_answer():
     question = request.json.get("question")
     
-    if 'chat_history' not in session:
-        session['chat_history'] = [system_prompt]
-    
-    chat_history = session['chat_history']
-    chat_history.append({"role": "user", "content": question})
+    # Initialize chat history for each request
+    chat_history = [system_prompt, {"role": "user", "content": question}]
 
     response = client.chat.completions.create(
         model="llama3-70b-8192",
@@ -40,10 +31,6 @@ def get_answer():
         temperature=1.2
     )
     answer = response.choices[0].message.content
-    chat_history.append({"role": "assistant", "content": answer})
-
-    # Update session chat history
-    session['chat_history'] = chat_history
 
     return jsonify({"answer": answer})
 
