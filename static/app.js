@@ -36,3 +36,36 @@ function sendQuestion() {
         }, 2000); // Simulate typing delay
     });
 }
+
+document.getElementById('question-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const question = document.getElementById('question').value;
+
+    // Retrieve chat history from localStorage or initialize it if not present
+    let chatHistory = JSON.parse(localStorage.getItem('chat_history')) || [];
+    chatHistory.push({"role": "user", "content": question});
+
+    // Send the question and chat history to the server
+    fetch('/get_answer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ question: question, chat_history: chatHistory })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const answerDiv = document.getElementById('answer');
+        // Render the answer in Markdown format using marked library
+        answerDiv.innerHTML = marked(data.answer);
+
+        // Update chat history with the latest data from the server
+        chatHistory = data.chat_history;
+        localStorage.setItem('chat_history', JSON.stringify(chatHistory));
+    });
+});
+
+// Clear chat history from localStorage on page reload
+window.onbeforeunload = function() {
+    localStorage.removeItem('chat_history');
+};
