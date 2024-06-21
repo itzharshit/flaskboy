@@ -4,7 +4,8 @@ function sendQuestion() {
 
     const chatBox = document.getElementById("chat-box");
     const userMessage = document.createElement("div");
-    userMessage.textContent = "You: " + userInput;
+    userMessage.className = "user";
+    userMessage.textContent = userInput;
     chatBox.appendChild(userMessage);
     
     document.getElementById("user-input").value = "";
@@ -28,7 +29,8 @@ function sendQuestion() {
         setTimeout(() => {
             chatBox.removeChild(typingIndicator);
             const botMessage = document.createElement("div");
-            botMessage.textContent = "Bot: " + data.answer;
+            botMessage.className = "bot";
+            botMessage.textContent = data.answer;
             chatBox.appendChild(botMessage);
             chatBox.scrollTop = chatBox.scrollHeight;
         }, 2000); // Simulate typing delay
