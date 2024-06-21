@@ -6,6 +6,15 @@ function sendQuestion() {
     const userMessage = document.createElement("div");
     userMessage.textContent = "You: " + userInput;
     chatBox.appendChild(userMessage);
+    
+    document.getElementById("user-input").value = "";
+
+    // Display typing animation
+    const typingIndicator = document.createElement("div");
+    typingIndicator.className = "typing-indicator";
+    typingIndicator.innerHTML = "Bot is typing...";
+    chatBox.appendChild(typingIndicator);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
     fetch('/get_answer', {
         method: 'POST',
@@ -16,11 +25,12 @@ function sendQuestion() {
     })
     .then(response => response.json())
     .then(data => {
-        const botMessage = document.createElement("div");
-        botMessage.textContent = "Bot: " + data.answer;
-        chatBox.appendChild(botMessage);
-        chatBox.scrollTop = chatBox.scrollHeight;
+        setTimeout(() => {
+            chatBox.removeChild(typingIndicator);
+            const botMessage = document.createElement("div");
+            botMessage.textContent = "Bot: " + data.answer;
+            chatBox.appendChild(botMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 2000); // Simulate typing delay
     });
-
-    document.getElementById("user-input").value = "";
 }
