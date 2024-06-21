@@ -5,7 +5,7 @@ from groq import Groq
 app = Flask(__name__)
 
 systemPrompt = """
-
+You are a help assistant
 """
 
 # Create the Groq client
