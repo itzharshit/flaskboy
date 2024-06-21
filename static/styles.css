@@ -10,14 +10,15 @@ body {
 }
 
 .chat-container {
-    width: 400px;
-    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    max-width: 600px;
     background: white;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
 }
 
 .chat-header {
@@ -26,11 +27,12 @@ body {
     padding: 15px;
     text-align: center;
     font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .chat-box {
+    flex: 1;
     padding: 20px;
-    height: 300px;
     overflow-y: auto;
     background: #F9F9F9;
     display: flex;
@@ -42,6 +44,7 @@ body {
     padding: 10px 15px;
     border-radius: 20px;
     max-width: 75%;
+    word-wrap: break-word;
 }
 
 .chat-box .user {
@@ -62,7 +65,7 @@ body {
 }
 
 input[type="text"] {
-    width: 80%;
+    flex: 1;
     padding: 15px;
     border: none;
     outline: none;
@@ -87,7 +90,7 @@ button:hover {
 .typing-indicator {
     font-style: italic;
     color: #888;
-    margin: 10px 0;
+    margin: 5px 0;
     padding: 10px 15px;
     border-radius: 20px;
     background: #f0f0f0;
@@ -122,5 +125,20 @@ button:hover {
         text-shadow:
             .25em 0 0 black,
             .5em 0 0 black;
+    }
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 600px) {
+    .chat-container {
+        border-radius: 0;
+    }
+
+    .chat-box {
+        padding: 10px;
+    }
+
+    input[type="text"], button {
+        padding: 10px;
     }
 }
